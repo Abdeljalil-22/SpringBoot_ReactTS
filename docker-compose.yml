@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  springboot-backend:
+    build: ./springboot-backend
+    container_name: springboot-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - db
+    networks:
+      - spring-boot-network
+
+  db:
+    image: postgres:15.3
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    networks:
+      - spring-boot-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+networks:
+  spring-boot-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
