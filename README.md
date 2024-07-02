@@ -1,5 +1,27 @@
 back end sprint boot app 
 
+the serever is:
+
+http://localhost:8080
+
+
+
+the mane endpont 
+get all the employees:
+GET /api/v1/employees
+
+create employee 
+POST /api/v1/employees
+
+get employee by id 
+GET /api/v1/employees/{id}
+
+update employee 
+PUT /api/v1/employees/{id}
+
+delete employee 
+Delete /api/v1/employees/{id}
+
 to run the app use 
 
 docker compose -f "docker-compose.yml" up  --build   
