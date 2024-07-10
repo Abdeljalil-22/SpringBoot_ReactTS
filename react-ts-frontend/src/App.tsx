@@ -1,5 +1,5 @@
 
-import * as React from 'react';
+
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useEffect, useState } from 'react';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -29,28 +30,23 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
-) {
-  return { name, calories, fat, carbs, protein };
+interface Employee {
+  id: number;
+  firstName: string;
+  lastName: string;
+  emailId: string;
 }
-let rows: any[] = [];
-
-fetch('http://127.0.0.1:8080/api/v1/employees')
-	.then(response => response.json())
-	.then(data => {rows=data 
-    console.log(data)})
-
-	.catch(err => console.error(err));
-
-
-
 
 export default function App() {
+  const [data, rows] = useState<Employee[]>([]);
+  useEffect(() => {
+  }, [])
+
+  fetch('http://127.0.0.1:8080/api/v1/employees')
+    .then(response => response.json())
+    .then(data => { rows(data) })
+    .catch(err => console.error(err));
+    
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -60,16 +56,12 @@ export default function App() {
             <StyledTableCell >First name</StyledTableCell>
             <StyledTableCell >Last name</StyledTableCell>
             <StyledTableCell >Email</StyledTableCell>
-            
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell >{row.id}</StyledTableCell>
+          {data.map((row) => (
+            <StyledTableRow key={row.id}>
+              <StyledTableCell component="th" scope="row">{row.id}</StyledTableCell>
               <StyledTableCell >{row.firstName}</StyledTableCell>
               <StyledTableCell >{row.lastName}</StyledTableCell>
               <StyledTableCell >{row.emailId}</StyledTableCell>
